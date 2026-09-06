@@ -1,6 +1,6 @@
 .property-grid {
   display: grid;
-  gap: clamp(1rem, 1.5vw, 1.5rem);
+  gap: clamp(1.15rem, 1.8vw, 1.85rem);
 }
 
 .property-grid--2 {

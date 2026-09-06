@@ -31,6 +31,9 @@ export default function PropertyCard({
             alt=""
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
+            onError={(e) => {
+              e.currentTarget.style.opacity = '0'
+            }}
           />
           {property.images[1] ? (
             <img
@@ -39,6 +42,9 @@ export default function PropertyCard({
               alt=""
               loading="lazy"
               decoding="async"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none'
+              }}
             />
           ) : null}
           <div className="property-card__veil" />
@@ -52,7 +58,7 @@ export default function PropertyCard({
             aria-label={favorite ? 'حذف از علاقه‌مندی' : 'افزودن به علاقه‌مندی'}
             onClick={() => toggleFavorite(property.id)}
           >
-            ♥
+            <span aria-hidden="true">{favorite ? '◆' : '◇'}</span>
           </button>
           <button
             type="button"
@@ -61,7 +67,7 @@ export default function PropertyCard({
             aria-label={compared ? 'حذف از مقایسه' : 'افزودن به مقایسه'}
             onClick={() => toggleCompare(property.id)}
           >
-            ⇄
+            <span aria-hidden="true">∥</span>
           </button>
         </div>
 

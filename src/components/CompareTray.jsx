@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 import { useFavorites } from '../context/FavoritesContext'
 import { properties } from '../data/properties'
 import Button from './Button'
@@ -6,6 +6,12 @@ import './CompareTray.css'
 
 export default function CompareTray() {
   const { compare, clearCompare, toggleCompare } = useFavorites()
+
+  useEffect(() => {
+    document.body.classList.toggle('has-compare-tray', compare.length > 0)
+    return () => document.body.classList.remove('has-compare-tray')
+  }, [compare.length])
+
   if (!compare.length) return null
 
   const items = compare

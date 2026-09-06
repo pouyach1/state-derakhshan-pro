@@ -23,8 +23,8 @@ export default function IntroGate() {
       } catch {
         /* ignore */
       }
-      setPhase('done')
-      return undefined
+      const id = window.setTimeout(() => setPhase('done'), 0)
+      return () => window.clearTimeout(id)
     }
 
     document.body.style.overflow = 'hidden'
