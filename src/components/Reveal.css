@@ -1,19 +1,35 @@
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(2.25rem);
   transition:
-    opacity var(--duration-slow) var(--ease-out),
-    transform var(--duration-slow) var(--ease-out);
-  will-change: opacity, transform;
+    opacity var(--duration) var(--ease-out-expo),
+    transform var(--duration) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
-.reveal.is-visible {
+.reveal.is-in {
   opacity: 1;
   transform: translateY(0);
 }
 
+.reveal--text {
+  overflow: hidden;
+}
+
+.reveal--text > * {
+  display: block;
+  transform: translateY(110%);
+  transition: transform var(--duration) var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal--text.is-in > * {
+  transform: translateY(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .reveal,
+  .reveal--text > * {
     opacity: 1;
     transform: none;
     transition: none;
