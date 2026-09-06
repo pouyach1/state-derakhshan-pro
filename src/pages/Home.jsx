@@ -1,275 +1,198 @@
-import { useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Button from '../components/Button'
-import CTASection from '../components/CTASection'
-import ImageBlock from '../components/ImageBlock'
-import PropertyFilters from '../components/PropertyFilters'
-import PropertyGrid from '../components/PropertyGrid'
 import Reveal from '../components/Reveal'
-import SectionHeading from '../components/SectionHeading'
+import HeroBanner from '../components/home/HeroBanner'
+import SloganBand from '../components/home/SloganBand'
 import { agency } from '../data/agency'
-import {
-  filterProperties,
-  getFeaturedProperties,
-  properties,
-} from '../data/properties'
-import { useDocumentMeta } from '../hooks/useReveal'
+import { getFeaturedProperties, properties } from '../data/properties'
+import { useDocumentMeta, useParallax } from '../hooks/useReveal'
 import './Home.css'
 
-const defaultFilters = {
-  q: '',
-  location: 'all',
-  type: 'all',
-  transaction: 'all',
-  bedrooms: 'all',
+function ParallaxFrame({ src, alt = '', ratio = '4 / 5', className = '' }) {
+  const ref = useParallax(14)
+  return (
+    <div className={['home-media', className].filter(Boolean).join(' ')} style={{ '--ratio': ratio }} ref={ref}>
+      <img src={src} alt={alt} loading="lazy" decoding="async" />
+    </div>
+  )
 }
 
 export default function Home() {
   useDocumentMeta({
-    title: 'املاک درخشان | تجربه دیجیتال املاک ممتاز کرج',
+    title: 'املاک درخشان | Derakhshan Real Estate',
     description:
-      'املاک درخشان؛ جستجو، فیلتر، مقایسه و انتخاب خانه‌های ممتاز در مهرشهر، عظیمیه، مصباح، فردیس و دهقان‌ویلا.',
+      'املاک درخشان؛ خانه‌هایی که با دقت انتخاب شده‌اند. کشف، بررسی و ارتباط با مشاور در کرج.',
   })
 
-  const navigate = useNavigate()
   const featured = getFeaturedProperties(4)
-  const heroProperty = featured[0]
-  const [filters, setFilters] = useState(defaultFilters)
-
-  const discovered = useMemo(
-    () => filterProperties(properties, filters).slice(0, 6),
-    [filters],
-  )
-
-  const openDiscovery = () => {
-    const params = new URLSearchParams()
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value && value !== 'all') params.set(key, value)
-    })
-    navigate(`/properties?${params.toString()}`)
-  }
+  const heroSlides = featured.slice(0, 3).map((item) => ({
+    id: item.id,
+    image: item.images[0],
+    slug: item.slug,
+    label: item.title,
+  }))
 
   return (
     <div className="home">
-      {/* 01 — INTRODUCTION */}
-      <section className="home-hero">
-        <div className="home-hero__media" aria-hidden="true">
-          <img
-            src={heroProperty.images[0]}
-            alt=""
-            fetchPriority="high"
-            decoding="async"
-          />
-          <div className="home-hero__veil" />
-        </div>
+      <HeroBanner
+        slides={heroSlides}
+        title={agency.name}
+        subtitle={agency.tagline}
+        cta={{ to: '/properties', label: 'مشاهده املاک' }}
+      />
 
-        <div className="container--wide home-hero__content">
-          <p className="home-hero__brand-en en-display">Derakhshan Real Estate</p>
-          <p className="home-hero__brand-fa">{agency.name}</p>
-          <h1 className="home-hero__title">
-            {agency.tagline}
-          </h1>
-          <p className="home-hero__lead">
-            تجربه دیجیتال املاک ممتاز کرج؛ از کشف و فیلتر تا مقایسه و گفتگو با مشاور —
-            مسیری روشن برای تصمیم‌گیری.
-          </p>
-          <div className="home-hero__actions">
-            <Button to="/properties" size="lg">
-              ورود به فهرست املاک
-            </Button>
-            <Button href="#discovery" variant="secondary" size="lg">
-              شروع کشف
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* 02 — DISCOVERY */}
-      <section id="discovery" className="section home-discovery">
-        <div className="container--wide">
+      {/* About — centered editorial */}
+      <section className="home-about">
+        <div className="holder">
           <Reveal>
-            <SectionHeading
-              eyebrow="Discovery"
-              title="کشف ملک، نه فقط تماشا"
-              description="جستجو، محله، نوع معامله و تعداد خواب را تنظیم کنید؛ نتایج فوراً به‌روز می‌شوند."
-              action={
-                <Button variant="text" onClick={openDiscovery}>
-                  مشاهده همه نتایج
-                </Button>
-              }
+            <ParallaxFrame
+              className="home-about__top"
+              src={featured[0]?.images[1] || featured[0]?.images[0]}
+              alt=""
+              ratio="980 / 356"
             />
           </Reveal>
 
-          <Reveal>
-            <PropertyFilters
-              value={filters}
-              onChange={setFilters}
-              resultCount={filterProperties(properties, filters).length}
-            />
-          </Reveal>
-
-          <Reveal>
-            <PropertyGrid properties={discovered} columns={3} priorityCount={3} />
+          <Reveal className="home-about__copy" delay={80}>
+            <p className="home-kicker en-display">About</p>
+            <h2>
+              درباره
+              <span>املاک درخشان</span>
+            </h2>
+            <p className="home-about__lead">
+              معرفی گزینشی املاک ممتاز در کرج، با تمرکز بر کیفیت سکونت و شفافیت ارائه.
+            </p>
+            <p>
+              {agency.name} به‌جای فهرست بلند آگهی، روی انتخاب دقیق، روایت فضا و مسیر مستقیم تا مشاور
+              تمرکز می‌کند — در مهرشهر، عظیمیه، مصباح، فردیس و دهقان‌ویلا.
+            </p>
+            <Button to="/about">بیشتر بدانید</Button>
           </Reveal>
         </div>
       </section>
 
-      {/* 03 — FEATURED / PROPERTY EXPERIENCE */}
-      <section className="section section--cream home-featured">
-        <div className="container--wide">
+      {/* Split story */}
+      <section className="home-split">
+        <div className="holder home-split__grid">
           <Reveal>
-            <SectionHeading
-              tone="light"
-              eyebrow="Featured"
-              title="ملک‌های منتخب این فصل"
-              description="واحدهایی که از نظر موقعیت، نور، کیفیت ساخت و حس سکونت بررسی شده‌اند."
-              action={
-                <Button to="/properties" variant="text-dark">
-                  همه املاک
-                </Button>
-              }
-            />
-          </Reveal>
-          <Reveal>
-            <PropertyGrid
-              properties={featured}
-              columns={2}
-              variant="landscape"
-              priorityCount={2}
-            />
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section home-experience">
-        <div className="container--wide home-experience__layout">
-          <Reveal>
-            <ImageBlock
-              src={featured[1]?.images[0]}
-              alt="نمای معماری معاصر"
-              caption="عکاسی معماری بخشی از معرفی حرفه‌ای هر ملک است"
-              ratio="4 / 5"
-            />
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="home-experience__copy">
-              <SectionHeading
-                eyebrow="Property Experience"
-                title="بررسی دقیق، تصمیم آگاهانه"
-                description="هر ملک روایت، مشخصات شفاف و مسیر مستقیم تا مشاور دارد. علاقه‌مندی و مقایسه را هم در همین تجربه نگه دارید."
-              />
-              <ul className="home-experience__list">
-                <li>
-                  <strong>اسکن سریع مشخصات</strong>
-                  <span>موقعیت، نوع، قیمت، متراژ و خواب در یک نگاه.</span>
-                </li>
-                <li>
-                  <strong>علاقه‌مندی محلی</strong>
-                  <span>بدون حساب کاربری؛ ذخیره‌سازی روی دستگاه شما.</span>
-                </li>
-                <li>
-                  <strong>مقایسه تا سه ملک</strong>
-                  <span>کنار هم دیدن گزینه‌ها برای انتخاب نهایی.</span>
-                </li>
+            <div className="home-split__copy">
+              <p className="home-kicker en-display">Approach</p>
+              <h2>
+                کم‌حرف،
+                <span>دقیق، معتبر</span>
+              </h2>
+              <p>
+                هر ملک پیش از معرفی از فیلتر موقعیت، نور، کیفیت ساخت و حس سکونت عبور می‌کند. هدف ما
+                تصمیم‌گیری روشن‌تر برای موکل است.
+              </p>
+              <ul>
+                {agency.services.slice(0, 3).map((service) => (
+                  <li key={service.title}>
+                    <strong>{service.title}</strong>
+                    <span>{service.description}</span>
+                  </li>
+                ))}
               </ul>
-              <div className="home-experience__actions">
-                <Button to="/favorites" variant="secondary">
-                  علاقه‌مندی‌ها
-                </Button>
-                <Button to="/compare" variant="secondary">
-                  مقایسه
-                </Button>
-              </div>
             </div>
           </Reveal>
+          <Reveal delay={100}>
+            <ParallaxFrame src={featured[1]?.images[0]} alt="" ratio="4 / 5" />
+          </Reveal>
         </div>
       </section>
 
-      {/* 04 — LOCAL EXPERTISE */}
-      <section className="section section--light home-locations">
-        <div className="container--wide">
-          <Reveal>
-            <SectionHeading
-              tone="light"
-              eyebrow="Local Expertise"
-              title="محله‌هایی که می‌شناسیم"
-              description="تمرکز املاک درخشان روی چند منطقه کلیدی کرج است؛ جایی که جزئیات محله به‌اندازه خود ملک اهمیت دارد."
-            />
+      <SloganBand
+        lines={['خانه‌هایی که', 'با دقت', 'انتخاب شده‌اند']}
+      />
+
+      {/* Featured properties — editorial large cards */}
+      <section className="home-featured">
+        <div className="holder">
+          <Reveal className="home-featured__head">
+            <p className="home-kicker en-display">Selected Homes</p>
+            <h2>ملک‌های منتخب</h2>
+            <p>مجموعه‌ای محدود از واحدها و ویلاهایی که برای این فصل انتخاب شده‌اند.</p>
           </Reveal>
 
-          <div className="home-locations__stage">
-            <Reveal>
+          <div className="home-featured__list">
+            {featured.map((property, index) => (
+              <Reveal key={property.id} delay={index * 60} className="home-feature-card">
+                <Link to={`/properties/${property.slug}`} className="home-feature-card__media">
+                  <img src={property.images[0]} alt="" loading="lazy" decoding="async" />
+                  <div className="home-feature-card__veil" />
+                  <div className="home-feature-card__body">
+                    <div className="home-feature-card__tags">
+                      <span>{property.transaction === 'rent' ? 'اجاره' : 'فروش'}</span>
+                      <span>{property.typeLabel}</span>
+                      <span>{property.location}</span>
+                    </div>
+                    <h3>{property.title}</h3>
+                    <p>
+                      {property.priceLabel}
+                      {property.priceSuffix ? ` / ${property.priceSuffix}` : ''}
+                    </p>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal className="home-featured__action">
+            <Button to="/properties">ورود به فهرست کامل</Button>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Locations */}
+      <section className="home-locations">
+        <div className="holder home-locations__grid">
+          <Reveal>
+            <div>
+              <p className="home-kicker en-display">Locations</p>
+              <h2>
+                محله‌هایی
+                <span>که می‌شناسیم</span>
+              </h2>
+              <p>
+                جزئیات محله به‌اندازه خود ملک اهمیت دارد. تمرکز ما روی چند منطقه کلیدی کرج است.
+              </p>
               <ul className="home-locations__rail">
                 {agency.locations.map((item, index) => (
                   <li key={item.name}>
                     <Link to={`/properties?location=${encodeURIComponent(item.name)}`}>
-                      <span className="home-locations__index">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <span className="home-locations__name">{item.name}</span>
-                      <span className="home-locations__count">
-                        {item.count.toLocaleString('fa-IR')} ملک فعال
-                      </span>
-                      <span className="home-locations__arrow" aria-hidden="true">
-                        ←
-                      </span>
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      <strong>{item.name}</strong>
+                      <em>{item.count.toLocaleString('fa-IR')} ملک</em>
                     </Link>
                   </li>
                 ))}
               </ul>
-            </Reveal>
-            <Reveal delay={120}>
-              <ImageBlock
-                src={featured[2]?.images[0]}
-                alt="فضای داخلی روشن"
-                caption="مهرشهر · عظیمیه · مصباح · فردیس · دهقان‌ویلا"
-                ratio="5 / 6"
-              />
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* 05 — SERVICES */}
-      <section className="section home-services">
-        <div className="container--wide">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Expertise"
-              title="آنچه برای موکلان انجام می‌دهیم"
-              description="خدماتی متمرکز برای خرید، فروش و اجاره املاک ممتاز."
-            />
-          </Reveal>
-          <div className="home-services__list">
-            {agency.services.map((service, index) => (
-              <Reveal key={service.title} delay={index * 70} as="article" className="service-row">
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 06 — TRUST */}
-      <section className="section section--cream home-trust">
-        <div className="container--wide home-trust__layout">
-          <Reveal>
-            <div>
-              <SectionHeading
-                tone="light"
-                eyebrow="Trust"
-                title="کم‌حرف، دقیق، معتبر"
-                description="ما به‌جای فهرست بلند، روی کیفیت معرفی تمرکز می‌کنیم. هر ملک روایت، تصویر و مشخصات شفاف دارد."
-              />
-              <Button to="/about" variant="solid-dark">
-                بیشتر درباره درخشان
-              </Button>
             </div>
           </Reveal>
           <Reveal delay={100}>
-            <div className="home-trust__stats" aria-label="آمار آژانس">
+            <ParallaxFrame src={featured[2]?.images[0]} alt="" ratio="5 / 6" />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Trust */}
+      <section className="home-trust">
+        <div className="holder home-trust__grid">
+          <Reveal>
+            <div>
+              <p className="home-kicker en-display">Trust</p>
+              <h2>اعتبار از دقت می‌آید</h2>
+              <p>
+                آمار زیر از داده‌های رسمی آژانس است — بدون ادعای تازه. برای آشنایی بیشتر با رویکرد
+                درخشان، صفحه درباره را ببینید.
+              </p>
+              <Button to="/about" variant="ghost">
+                درباره درخشان
+              </Button>
+            </div>
+          </Reveal>
+          <Reveal delay={80}>
+            <div className="home-trust__stats">
               {agency.stats.map((stat) => (
                 <div key={stat.label}>
                   <strong>{stat.value}</strong>
@@ -281,13 +204,57 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 07 — CONVERSION */}
-      <CTASection
-        title="قدم بعدی را روشن کنید"
-        description="اگر به‌دنبال خانه‌ای خاص در کرج هستید، فهرست املاک را ببینید یا مستقیم با مشاور درخشان گفتگو کنید."
-        primary={{ to: '/properties', label: 'مشاهده املاک' }}
-        secondary={{ href: agency.whatsapp, label: 'گفتگو با مشاور' }}
-      />
+      {/* Catalog strip */}
+      <section className="home-strip">
+        <div className="holder home-strip__grid">
+          <Reveal>
+            <ParallaxFrame src={featured[3]?.images[0] || featured[0]?.images[0]} alt="" ratio="16 / 11" />
+          </Reveal>
+          <Reveal delay={90}>
+            <div>
+              <p className="home-kicker en-display">Catalog</p>
+              <h2>
+                {properties.length.toLocaleString('fa-IR')} ملک
+                <span>آماده بازدید</span>
+              </h2>
+              <p>
+                از پنت‌هاوس‌های تراس‌دار تا ویلاهای باغی؛ فهرست کوتاه اما باکیفیت. علاقه‌مندی و مقایسه
+                را هم در همین تجربه نگه دارید.
+              </p>
+              <div className="home-strip__actions">
+                <Button to="/properties">مشاهده املاک</Button>
+                <Button to="/favorites" variant="ghost">
+                  علاقه‌مندی‌ها
+                </Button>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Join / CTA — TREF join pattern */}
+      <section className="home-join">
+        <div className="holder">
+          <Reveal className="home-join__inner">
+            <span className="home-join__key" aria-hidden="true" />
+            <p className="home-kicker en-display">Next Step</p>
+            <h2>قدم بعدی را روشن کنید</h2>
+            <p>
+              اگر به‌دنبال خانه‌ای خاص در کرج هستید، فهرست املاک را ببینید یا مستقیم با مشاور درخشان
+              گفتگو کنید.
+            </p>
+            <div className="home-join__actions">
+              <Button to="/properties">مشاهده املاک</Button>
+              <Button href={agency.whatsapp} target="_blank" rel="noreferrer" variant="ghost">
+                گفتگو با مشاور
+              </Button>
+              <Button href={agency.phoneHref} variant="ghost">
+                {agency.phone}
+              </Button>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </div>
   )
 }

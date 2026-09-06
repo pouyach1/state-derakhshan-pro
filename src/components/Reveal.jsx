@@ -13,8 +13,8 @@ export default function Reveal({
   return (
     <Tag
       ref={ref}
-      className={['reveal', visible ? 'is-visible' : '', className].filter(Boolean).join(' ')}
-      style={{ transitionDelay: `${delay}ms` }}
+      className={['reveal', visible ? 'is-in' : '', className].filter(Boolean).join(' ')}
+      style={{ '--reveal-delay': `${delay}ms` }}
       {...props}
     >
       {children}
