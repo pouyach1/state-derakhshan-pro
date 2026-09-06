@@ -1,0 +1,86 @@
+.intro-gate {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-modal) + 20);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.intro-gate__panel {
+  position: absolute;
+  inset-inline: 0;
+  background: var(--c4);
+  transition: transform 0.85s var(--ease-out);
+}
+
+.intro-gate__panel--a {
+  top: 0;
+  height: 52%;
+  transform-origin: top;
+}
+
+.intro-gate__panel--b {
+  bottom: 0;
+  height: 52%;
+  transform-origin: bottom;
+}
+
+.intro-gate.is-exit .intro-gate__panel--a {
+  transform: translateY(-102%);
+}
+
+.intro-gate.is-exit .intro-gate__panel--b {
+  transform: translateY(102%);
+}
+
+.intro-gate__content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
+}
+
+.intro-gate.is-reveal .intro-gate__content,
+.intro-gate.is-exit .intro-gate__content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-gate.is-exit .intro-gate__content {
+  opacity: 0;
+  transition-delay: 0.05s;
+}
+
+.intro-gate__en {
+  color: var(--c2);
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.7rem);
+}
+
+.intro-gate__fa {
+  color: var(--c1);
+  font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem);
+  font-weight: 500;
+}
+
+.intro-gate__line {
+  width: 3.5rem;
+  height: 1px;
+  background: var(--c2);
+  margin-top: 0.35rem;
+  transform: scaleX(0);
+  transition: transform 0.7s var(--ease-out) 0.15s;
+}
+
+.intro-gate.is-reveal .intro-gate__line,
+.intro-gate.is-exit .intro-gate__line {
+  transform: scaleX(1);
+}

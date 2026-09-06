@@ -1,0 +1,116 @@
+.about-page {
+  padding-top: var(--header-h);
+}
+
+.about-hero__layout,
+.about-story {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.about-hero__copy {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 34rem;
+}
+
+.about-hero__en {
+  color: var(--c2);
+  font-size: 1.4rem;
+}
+
+.about-hero__copy h1 {
+  font-size: clamp(2.4rem, 1.8rem + 2vw, 3.8rem);
+  font-weight: 600;
+  color: var(--c1);
+  line-height: 1.15;
+}
+
+.about-hero__lead {
+  color: var(--color-muted);
+  line-height: var(--leading-relaxed);
+  font-size: var(--text-md);
+}
+
+.about-hero__tag {
+  color: var(--c2);
+  font-size: var(--text-base);
+}
+
+.about-philosophy {
+  text-align: center;
+}
+
+.about-story__copy {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(242, 241, 237, 0.12);
+  border: 1px solid rgba(242, 241, 237, 0.12);
+}
+
+.about-stats > div {
+  background: rgba(0, 0, 0, 0.18);
+  padding: 1.25rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.about-stats strong {
+  font-size: var(--text-xl);
+  color: var(--c1);
+  font-weight: 500;
+}
+
+.about-stats span {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.about-services {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(21, 38, 33, 0.1);
+  border: 1px solid rgba(21, 38, 33, 0.1);
+}
+
+.about-services article {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 1.6rem 1.4rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.about-services span {
+  color: var(--c-accent-hover);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+}
+
+.about-services h3 {
+  color: var(--c4);
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+.about-services p {
+  color: var(--color-on-light-muted);
+  line-height: var(--leading-relaxed);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 980px) {
+  .about-hero__layout,
+  .about-story,
+  .about-services {
+    grid-template-columns: 1fr;
+  }
+}
