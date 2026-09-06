@@ -1,0 +1,12 @@
+/* Desktop-first Pro build. Mobile polish is deferred to Phase 7.
+   Keep baseline readable without redesigning mobile layouts. */
+
+@media (max-width: 900px) {
+  .site-nav {
+    display: none !important;
+  }
+
+  .site-header__phone {
+    display: none !important;
+  }
+}
