@@ -1,29 +1,33 @@
-/* Rio Property done-deals card — reconstructed proportions & motion.
-   Easing: cubic-bezier(.625, .05, 0, 1)
-   Rest: image + bottom bar. Hover: grayscale, scale, overlay, text reveal, arrow, bottom fill.
+/* Rio Property — Done Deals / work_main gallery reconstruction
+   Source: https://www.rioproperty.co.za/done-deals
+   Grid: 12-col desktop (span 4 → 3 cards), 8-col ≤991 (2 cards), 2-col ≤767
+   Motion easing: cubic-bezier(.625, .05, 0, 1)
 */
 
 .property-card {
   --pc-ease: cubic-bezier(0.625, 0.05, 0, 1);
-  --pc-ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --pc-radius: var(--radius-card, 1rem);
   --pc-bottom-accent: var(--c4);
   --pc-bottom-fill: var(--c2);
+  --pc-label: #333;
+  --pc-label-on-dark: var(--c1);
 
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
   gap: 0;
   min-width: 0;
 }
 
-.property-card--landscape {
-  aspect-ratio: 16 / 11;
+.property-card--editorial,
+.property-card--featured {
+  aspect-ratio: 1;
 }
 
-.property-card--featured {
-  aspect-ratio: 4 / 5;
+.property-card--landscape {
+  aspect-ratio: 16 / 11;
 }
 
 .property-card__inner {
@@ -32,7 +36,8 @@
   min-height: 0;
   overflow: clip;
   cursor: pointer;
-  background: color-mix(in srgb, var(--c5) 55%, #000 12%);
+  border-radius: var(--pc-radius);
+  background-color: color-mix(in srgb, var(--c5) 40%, #ccc 60%);
 }
 
 .property-card__hit {
@@ -53,16 +58,16 @@
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   transition: transform 1s var(--pc-ease);
   will-change: transform;
+  border-radius: inherit;
 }
 
 .property-card__image {
-  position: absolute;
-  inset: 0% -10%;
-  width: 120%;
-  max-width: 120%;
-  height: 100%;
-  object-fit: cover;
   display: block;
+  width: 100%;
+  height: 105%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0% 0% auto 0%;
   transition: filter 0.75s var(--pc-ease);
 }
 
@@ -137,14 +142,17 @@
   padding: 1.5rem;
   pointer-events: none;
   color: var(--c1);
+  border-radius: inherit;
 }
 
+/* Exact Rio overlay_bg */
 .property-card__overlay-bg {
   position: absolute;
-  inset: 0;
+  inset: 0%;
   opacity: 0;
-  background-image: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.75));
+  background-image: linear-gradient(#0000 50%, #000000bf);
   transition: opacity 1s var(--pc-ease);
+  border-radius: inherit;
 }
 
 .property-card__overlay-text {
@@ -159,7 +167,7 @@
 .property-card__meta {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--gutter, 1rem);
+  gap: 1rem;
   align-items: start;
   overflow: clip;
 }
@@ -188,13 +196,12 @@
   font-size: var(--text-xs);
   font-weight: 500;
   line-height: 1.25;
-  letter-spacing: 0.02em;
-  text-transform: none;
+  letter-spacing: 0.04em;
 }
 
 .property-card__title {
   font-family: var(--font-sans);
-  font-size: clamp(1.35rem, 1.1rem + 0.55vw, 2rem);
+  font-size: clamp(1.25rem, 1rem + 0.5vw, 2rem);
   font-weight: 600;
   line-height: 1.17;
   letter-spacing: -0.01em;
@@ -215,16 +222,17 @@
   color: rgba(242, 241, 237, 0.7);
 }
 
+/* Bottom labels: Flexbox space-between — type | status (RETAIL / LEASED) */
 .property-card__bottom {
   position: relative;
   display: flex;
-  flex-direction: row;
+  flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
   overflow: clip;
   flex: 0 0 auto;
   padding: 0.375rem 0.5rem 0.25rem;
-  color: var(--c1);
+  color: var(--pc-label-on-dark);
   text-shadow: 0 1.5em 0 var(--pc-bottom-accent);
 }
 
@@ -247,11 +255,11 @@
   font-size: var(--text-xs);
   font-weight: 500;
   line-height: 1.3;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   transition: transform 1s var(--pc-ease);
 }
 
-/* —— Hover / focus (fine pointer only, matching Rio) —— */
 @media (hover: hover) and (pointer: fine) {
   .property-card__inner:hover .property-card__icon,
   .property-card__inner:focus-within .property-card__icon {
@@ -291,7 +299,6 @@
   }
 }
 
-/* Touch / no-hover: keep content readable without hover gate */
 @media (hover: none), (pointer: coarse) {
   .property-card__line > p,
   .property-card__line > h3 {

@@ -1,35 +1,69 @@
-/* Grid rhythm aligned with Rio done-deals / featured spacing.
-   Home featured carousel uses 2 cols; catalog pages keep denser columns.
+/* Rio work_main_collection_list.u-grid-custom system
+   Desktop: 12 tracks, items span 4 → 3 cards
+   ≤991px: 8 tracks, span 4 → 2 cards
+   ≤767px: 2 tracks → 1 card
+   Column gap ≈ site--gutter (1rem); row gap ≈ space--2 (2rem)
+   Wrapper vertical rhythm uses space--4 (4rem) between blocks.
 */
 
 .property-grid {
+  --pg-columns: 12;
+  --pg-span: 4;
+  --pg-gutter: 1rem;
+  --pg-row-gap: 2rem;
+  --pg-block-gap: 4rem;
+
   display: grid;
-  gap: clamp(1.25rem, 2vw, 2.5rem);
+  grid-template-columns: repeat(var(--pg-columns), minmax(0, 1fr));
+  grid-column-gap: var(--pg-gutter);
+  grid-row-gap: var(--pg-row-gap);
   align-items: stretch;
 }
 
+.property-grid > .property-card {
+  grid-column: span var(--pg-span);
+  min-width: 0;
+}
+
+/* Explicit column helpers still supported for related / compact layouts */
 .property-grid--2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  --pg-columns: 2;
+  --pg-span: 1;
 }
 
 .property-grid--3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  --pg-columns: 12;
+  --pg-span: 4;
 }
 
 .property-grid--4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  --pg-columns: 12;
+  --pg-span: 3;
 }
 
-@media (max-width: 1280px) {
+/* Rio tablet breakpoint */
+@media screen and (max-width: 991px) {
+  .property-grid,
+  .property-grid--3,
   .property-grid--4 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    --pg-columns: 8;
+    --pg-span: 4;
+  }
+
+  .property-grid--2 {
+    --pg-columns: 2;
+    --pg-span: 1;
   }
 }
 
-@media (max-width: 1024px) {
+/* Rio mobile breakpoint */
+@media screen and (max-width: 767px) {
+  .property-grid,
+  .property-grid--2,
   .property-grid--3,
   .property-grid--4 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    --pg-columns: 2;
+    --pg-span: 2;
   }
 }
 
@@ -38,4 +72,5 @@
   border: 1px solid var(--color-border);
   text-align: center;
   color: var(--color-muted);
+  grid-column: 1 / -1;
 }

@@ -42,6 +42,7 @@
   --gutter: clamp(1.25rem, 2.8vw, 2.5rem);
   --holder: min(100% - (var(--gutter) * 2), 86rem);
   --header-h: 5.5rem;
+  --radius-card: 1rem;
 
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-soft: cubic-bezier(0.46, 0.03, 0.52, 0.96);
