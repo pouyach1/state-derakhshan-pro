@@ -330,6 +330,7 @@
   .property-card__icon,
   .property-card__overlay-bg,
   .property-card__overlay-text p,
+  .property-card__overlay-text h3,
   .property-card__bottom-bg,
   .property-card__bottom p {
     transition: none;
