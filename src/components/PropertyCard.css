@@ -69,7 +69,7 @@
 .property-card__icon {
   position: absolute;
   top: 0;
-  inset-inline-end: 0;
+  right: 0;
   z-index: 3;
   width: 3rem;
   aspect-ratio: 1;
@@ -79,24 +79,16 @@
   transition: transform 0.75s var(--pc-ease);
 }
 
-[dir='rtl'] .property-card__icon {
-  transform: translate(-100%, -100%);
-}
-
 .property-card__icon-svg {
   display: block;
   width: 100%;
   height: auto;
 }
 
-[dir='rtl'] .property-card__icon-svg {
-  transform: scaleX(-1);
-}
-
 .property-card__tools {
   position: absolute;
   top: 0.65rem;
-  inset-inline-start: 0.65rem;
+  left: 0.65rem;
   z-index: 5;
   display: flex;
   gap: 0.3rem;
@@ -180,8 +172,12 @@
   justify-content: flex-end;
 }
 
-.property-card__overlay-text p,
-.property-card__overlay-text h3 {
+.property-card__line {
+  overflow: clip;
+}
+
+.property-card__line > p,
+.property-card__line > h3 {
   margin: 0;
   transform: translateY(100%);
   transition: transform 0.75s var(--pc-ease);
@@ -262,20 +258,15 @@
     transform: translate(1px, -1px);
   }
 
-  [dir='rtl'] .property-card__inner:hover .property-card__icon,
-  [dir='rtl'] .property-card__inner:focus-within .property-card__icon {
-    transform: translate(-1px, -1px);
-  }
-
   .property-card__inner:hover .property-card__image,
   .property-card__inner:focus-within .property-card__image {
     filter: grayscale(1);
   }
 
-  .property-card__inner:hover .property-card__overlay-text p,
-  .property-card__inner:hover .property-card__overlay-text h3,
-  .property-card__inner:focus-within .property-card__overlay-text p,
-  .property-card__inner:focus-within .property-card__overlay-text h3 {
+  .property-card__inner:hover .property-card__line > p,
+  .property-card__inner:hover .property-card__line > h3,
+  .property-card__inner:focus-within .property-card__line > p,
+  .property-card__inner:focus-within .property-card__line > h3 {
     transform: translateY(0%);
   }
 
@@ -302,8 +293,8 @@
 
 /* Touch / no-hover: keep content readable without hover gate */
 @media (hover: none), (pointer: coarse) {
-  .property-card__overlay-text p,
-  .property-card__overlay-text h3 {
+  .property-card__line > p,
+  .property-card__line > h3 {
     transform: none;
   }
 
@@ -329,15 +320,15 @@
   .property-card__image,
   .property-card__icon,
   .property-card__overlay-bg,
-  .property-card__overlay-text p,
-  .property-card__overlay-text h3,
+  .property-card__line > p,
+  .property-card__line > h3,
   .property-card__bottom-bg,
   .property-card__bottom p {
     transition: none;
   }
 
-  .property-card__overlay-text p,
-  .property-card__overlay-text h3 {
+  .property-card__line > p,
+  .property-card__line > h3 {
     transform: none;
   }
 

@@ -84,20 +84,30 @@ export default function PropertyCard({
           <div className="property-card__overlay-text">
             <div className="property-card__meta">
               <div className="property-card__meta-col">
-                <p>{property.location}</p>
+                <div className="property-card__line">
+                  <p>{property.location}</p>
+                </div>
               </div>
               <div className="property-card__meta-col property-card__meta-col--stats">
-                <p>{formatArea(property.area)}</p>
-                <p>{formatCount(property.bedrooms)} خواب</p>
+                <div className="property-card__line">
+                  <p>{formatArea(property.area)}</p>
+                </div>
+                <div className="property-card__line">
+                  <p>{formatCount(property.bedrooms)} خواب</p>
+                </div>
               </div>
             </div>
-            <h3 className="property-card__title">{property.title}</h3>
-            <p className="property-card__price">
-              {property.priceLabel}
-              {property.priceSuffix ? (
-                <span> / {property.priceSuffix}</span>
-              ) : null}
-            </p>
+            <div className="property-card__line">
+              <h3 className="property-card__title">{property.title}</h3>
+            </div>
+            <div className="property-card__line">
+              <p className="property-card__price">
+                {property.priceLabel}
+                {property.priceSuffix ? (
+                  <span> / {property.priceSuffix}</span>
+                ) : null}
+              </p>
+            </div>
           </div>
         </div>
       </div>
