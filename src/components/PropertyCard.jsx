@@ -3,6 +3,11 @@ import { useFavorites } from '../context/FavoritesContext'
 import { formatArea, formatCount } from '../data/properties'
 import './PropertyCard.css'
 
+/**
+ * Property listing card reconstructed from Rio Property done-deals cards.
+ * Visual/interaction language: https://www.rioproperty.co.za/
+ * Palette remains Derakhshan (TREF tokens). Direction is native RTL.
+ */
 export default function PropertyCard({
   property,
   priority = false,
@@ -11,44 +16,47 @@ export default function PropertyCard({
   const { isFavorite, toggleFavorite, isCompared, toggleCompare } = useFavorites()
   const favorite = isFavorite(property.id)
   const compared = isCompared(property.id)
-
-  const specs = [
-    formatArea(property.area),
-    `${formatCount(property.bedrooms)} خواب`,
-    `${formatCount(property.bathrooms)} سرویس`,
-  ]
+  const statusLabel = property.transaction === 'rent' ? 'اجاره' : 'فروش'
+  const detailHref = `/properties/${property.slug}`
 
   return (
-    <article className={['property-card', `property-card--${variant}`].join(' ')}>
-      <div className="property-card__media">
+    <article
+      className={['property-card', `property-card--${variant}`].join(' ')}
+    >
+      <div className="property-card__inner">
         <Link
-          to={`/properties/${property.slug}`}
-          className="property-card__media-link"
+          to={detailHref}
+          className="property-card__hit"
           aria-label={`مشاهده ${property.title}`}
-        >
+        />
+
+        <div className="property-card__image-wrap" aria-hidden="true">
           <img
+            className="property-card__image"
             src={property.images[0]}
             alt=""
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
             onError={(e) => {
-              e.currentTarget.style.opacity = '0'
+              e.currentTarget.style.opacity = '0.35'
             }}
           />
-          {property.images[1] ? (
-            <img
-              className="property-card__alt"
-              src={property.images[1]}
-              alt=""
-              loading="lazy"
-              decoding="async"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none'
-              }}
+        </div>
+
+        <div className="property-card__icon" aria-hidden="true">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 69 68"
+            fill="currentColor"
+            className="property-card__icon-svg"
+          >
+            <path
+              d="M51 48.8245H48.8983V21.5618L20.4752 49.573L19 48.0761L47.3858 20.1017H19.7376V18H51V48.8245Z"
+              stroke="currentColor"
+              strokeWidth="1"
             />
-          ) : null}
-          <div className="property-card__veil" />
-        </Link>
+          </svg>
+        </div>
 
         <div className="property-card__tools">
           <button
@@ -72,24 +80,42 @@ export default function PropertyCard({
         </div>
 
         <div className="property-card__overlay">
-          <div className="property-card__badges">
-            <span>{property.transaction === 'rent' ? 'اجاره' : 'فروش'}</span>
-            <span>{property.typeLabel}</span>
-            <span>{property.location}</span>
+          <div className="property-card__overlay-bg" aria-hidden="true" />
+          <div className="property-card__overlay-text">
+            <div className="property-card__meta">
+              <div className="property-card__meta-col">
+                <div className="property-card__line">
+                  <p>{property.location}</p>
+                </div>
+              </div>
+              <div className="property-card__meta-col property-card__meta-col--stats">
+                <div className="property-card__line">
+                  <p>{formatArea(property.area)}</p>
+                </div>
+                <div className="property-card__line">
+                  <p>{formatCount(property.bedrooms)} خواب</p>
+                </div>
+              </div>
+            </div>
+            <div className="property-card__line">
+              <h3 className="property-card__title">{property.title}</h3>
+            </div>
+            <div className="property-card__line">
+              <p className="property-card__price">
+                {property.priceLabel}
+                {property.priceSuffix ? (
+                  <span> / {property.priceSuffix}</span>
+                ) : null}
+              </p>
+            </div>
           </div>
-          <h3>
-            <Link to={`/properties/${property.slug}`}>{property.title}</Link>
-          </h3>
-          <p className="property-card__price">
-            {property.priceLabel}
-            {property.priceSuffix ? <span> / {property.priceSuffix}</span> : null}
-          </p>
-          <ul className="property-card__specs" aria-label="مشخصات کلیدی">
-            {specs.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
         </div>
+      </div>
+
+      <div className="property-card__bottom">
+        <div className="property-card__bottom-bg" aria-hidden="true" />
+        <p>{property.typeLabel}</p>
+        <p>{statusLabel}</p>
       </div>
     </article>
   )
